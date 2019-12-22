@@ -31,7 +31,8 @@ namespace Accounting
                     var budget = FindBudget(currentDate);
                     if (budget != null)
                     {
-                        var overlappingDays = DateTime.DaysInMonth(startDate.Year, startDate.Month) - startDate.Day + 1;
+                        var overlappingEnd = budget.LastDay();
+                        var overlappingDays = OverlappingDays(startDate, overlappingEnd);
                         totalBudget += budget.DailyAmount() * overlappingDays;
                     }
                 }
