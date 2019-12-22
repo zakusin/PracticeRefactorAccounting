@@ -28,7 +28,7 @@ namespace Accounting
             {
                 if (IsSameYearMonth(startDate, currentDate))
                 {
-                    var budget = FindBudget(startDate);
+                    var budget = FindBudget(currentDate);
                     if (budget != null)
                     {
                         var overlappingDays = DateTime.DaysInMonth(startDate.Year, startDate.Month) - startDate.Day + 1;
