@@ -11,28 +11,23 @@ namespace Accounting
                 return 0;
 
             var totalBudget = 0m;
-            if (startDate.Year == endDate.Year)
+            if (startDate.Year == endDate.Year && startDate.Month == endDate.Month)
             {
-                if (startDate.Month == endDate.Month)
+                var budget = Repo.GetAll().FirstOrDefault(model => model.YearMonth == startDate.ToString("yyyyMM"));
+                if (budget != null)
                 {
-                    var budget = Repo.GetAll().FirstOrDefault(model => model.YearMonth == startDate.ToString("yyyyMM"));
-                    if (budget != null)
-                    {
-                        var overlappingDays = OverlappingDays(startDate, endDate);
-                        return budget.DailyAmount() * overlappingDays;
-                    }
-                    return 0;
+                    var overlappingDays = OverlappingDays(startDate, endDate);
+                    return budget.DailyAmount() * overlappingDays;
                 }
+                return 0;
             }
 
             var currentDate = new DateTime(startDate.Year, startDate.Month, 1);
 
             var i = 0;
 
-            while (true)
+            while (currentDate <= endDate)
             {
-                if (currentDate > endDate)
-                    break;
                 if (i == 0)
                 {
                     totalBudget += BudgetOfMonth(startDate,
