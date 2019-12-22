@@ -11,7 +11,7 @@ namespace Accounting
                 return 0;
 
             var totalBudget = 0m;
-            if (IsSameYearMonth(startDate,endDate))
+            if (IsSameYearMonth(startDate, endDate))
             {
                 var budget = Repo.GetAll().FirstOrDefault(model => model.YearMonth == startDate.ToString("yyyyMM"));
                 if (budget != null)
@@ -28,17 +28,14 @@ namespace Accounting
             {
                 if (IsSameYearMonth(startDate, currentDate))
                 {
-                    int days = DateTime.DaysInMonth(startDate.Year, startDate.Month) - startDate.Day + 1;
-                    var daysInMonth = DateTime.DaysInMonth(startDate.Year, startDate.Month);
-
                     var budget = Repo.GetAll().FirstOrDefault(model => model.YearMonth == startDate.ToString("yyyyMM"));
-                    if (budget != null) totalBudget += budget.Amount / daysInMonth * days;
-                    else
+                    if (budget != null)
                     {
-                        totalBudget += 0;
+                        var days = DateTime.DaysInMonth(startDate.Year, startDate.Month) - startDate.Day + 1;
+                        totalBudget += budget.DailyAmount() * days;
                     }
                 }
-                else if (IsSameYearMonth(endDate,currentDate))
+                else if (IsSameYearMonth(endDate, currentDate))
                 {
                     totalBudget += BudgetOfMonth(endDate, endDate.Day);
                 }
