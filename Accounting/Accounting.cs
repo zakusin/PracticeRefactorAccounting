@@ -28,8 +28,15 @@ namespace Accounting
             {
                 if (IsSameYearMonth(startDate, currentDate))
                 {
-                    totalBudget += BudgetOfMonth(startDate,
-                        DateTime.DaysInMonth(startDate.Year, startDate.Month) - startDate.Day + 1);
+                    int days = DateTime.DaysInMonth(startDate.Year, startDate.Month) - startDate.Day + 1;
+                    var daysInMonth = DateTime.DaysInMonth(startDate.Year, startDate.Month);
+
+                    var budget = Repo.GetAll().FirstOrDefault(model => model.YearMonth == startDate.ToString("yyyyMM"));
+                    if (budget != null) totalBudget += budget.Amount / daysInMonth * days;
+                    else
+                    {
+                        totalBudget += 0;
+                    }
                 }
                 else if (IsSameYearMonth(endDate,currentDate))
                 {
