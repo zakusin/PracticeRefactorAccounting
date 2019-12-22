@@ -2,7 +2,7 @@
 
 namespace Accounting
 {
-    internal interface IBudgetRepo
+    public interface IBudgetRepo
     {
         List<Budget> GetAll();
     }

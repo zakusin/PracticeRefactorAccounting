@@ -2,7 +2,7 @@
 
 namespace Accounting
 {
-    internal class FakeRepo : IBudgetRepo
+    public class FakeRepo : IBudgetRepo
     {
         public List<Budget> GetAll()
         {
