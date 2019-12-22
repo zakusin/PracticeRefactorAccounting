@@ -10,19 +10,21 @@ namespace Accounting
             if (startDate > endDate)
                 return 0;
 
-            var budget = 0m;
+            var totalBudget = 0m;
             if (startDate.Year == endDate.Year)
             {
                 if (startDate.Month == endDate.Month)
                 {
                     var days = endDate.Subtract(startDate).Days + 1;
-                    return BudgetOfMonth(startDate, days);
+                    var daysInMonth = DateTime.DaysInMonth(startDate.Year, startDate.Month);
+
+                    var budget = Repo.GetAll().FirstOrDefault(model => model.YearMonth == startDate.ToString("yyyyMM"));
+                    if (budget != null) return budget.Amount / daysInMonth * days;
+                    return 0;
                 }
             }
 
-
             var currentDate = new DateTime(startDate.Year, startDate.Month, 1);
-
 
             var i = 0;
 
@@ -32,23 +34,23 @@ namespace Accounting
                     break;
                 if (i == 0)
                 {
-                    budget += BudgetOfMonth(startDate,
+                    totalBudget += BudgetOfMonth(startDate,
                         DateTime.DaysInMonth(startDate.Year, startDate.Month) - startDate.Day + 1);
                 }
                 else if (currentDate.Year == endDate.Year && currentDate.Month == endDate.Month)
                 {
-                    budget += BudgetOfMonth(endDate, endDate.Day);
+                    totalBudget += BudgetOfMonth(endDate, endDate.Day);
                 }
                 else
                 {
-                    budget += BudgetOfMonth(currentDate, DateTime.DaysInMonth(currentDate.Year, currentDate.Month));
+                    totalBudget += BudgetOfMonth(currentDate, DateTime.DaysInMonth(currentDate.Year, currentDate.Month));
                 }
 
                 currentDate = currentDate.AddMonths(1);
                 i++;
             }
 
-            return budget;
+            return totalBudget;
         }
 
         private decimal BudgetOfMonth(DateTime startDate, int days)
