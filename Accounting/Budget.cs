@@ -12,5 +12,10 @@ namespace Accounting
             var firstDayOfBudget = DateTime.ParseExact(YearMonth + "01", "yyyyMMdd", null);
             return DateTime.DaysInMonth(firstDayOfBudget.Year, firstDayOfBudget.Month);
         }
+
+        public decimal DailyAmount()
+        {
+            return Amount / DaysInBudget();
+        }
     }
 }

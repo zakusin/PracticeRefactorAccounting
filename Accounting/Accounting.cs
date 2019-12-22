@@ -19,8 +19,7 @@ namespace Accounting
                     if (budget != null)
                     {
                         var overlappingDays = endDate.Subtract(startDate).Days + 1;
-                        var daysInBudget = budget.DaysInBudget();
-                        return budget.Amount / daysInBudget * overlappingDays;
+                        return budget.DailyAmount() * overlappingDays;
                     }
                     return 0;
                 }
