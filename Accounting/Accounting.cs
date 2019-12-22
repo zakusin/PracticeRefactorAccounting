@@ -15,11 +15,13 @@ namespace Accounting
             {
                 if (startDate.Month == endDate.Month)
                 {
-                    var days = endDate.Subtract(startDate).Days + 1;
-                    var daysInMonth = DateTime.DaysInMonth(startDate.Year, startDate.Month);
-
                     var budget = Repo.GetAll().FirstOrDefault(model => model.YearMonth == startDate.ToString("yyyyMM"));
-                    if (budget != null) return budget.Amount / daysInMonth * days;
+                    if (budget != null)
+                    {
+                        var overlappingDays = endDate.Subtract(startDate).Days + 1;
+                        var daysInBudget = DateTime.DaysInMonth(startDate.Year, startDate.Month);
+                        return budget.Amount / daysInBudget * overlappingDays;
+                    }
                     return 0;
                 }
             }
