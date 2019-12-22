@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Accounting
 {
-    class FakeRepo : IBudgetRepo
+    internal class FakeRepo : IBudgetRepo
     {
         public List<Budget> GetAll()
         {

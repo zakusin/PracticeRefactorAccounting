@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using NUnit.Framework;
 
 namespace Accounting
 {
-    class Accounting
+    internal class Accounting
     {
-        
         public decimal QueryBudget(DateTime startDate, DateTime endDate)
         {
             if (startDate > endDate)
@@ -30,15 +26,14 @@ namespace Accounting
 
             var i = 0;
 
-            while(true)
+            while (true)
             {
-                if(currentDate> endDate)
+                if (currentDate > endDate)
                     break;
                 if (i == 0)
                 {
                     budget += BudgetOfMonth(startDate,
                         DateTime.DaysInMonth(startDate.Year, startDate.Month) - startDate.Day + 1);
-
                 }
                 else if (currentDate.Year == endDate.Year && currentDate.Month == endDate.Month)
                 {
@@ -52,20 +47,18 @@ namespace Accounting
                 currentDate = currentDate.AddMonths(1);
                 i++;
             }
+
             return budget;
         }
 
         private decimal BudgetOfMonth(DateTime startDate, int days)
         {
-
-
             var daysInMonth = DateTime.DaysInMonth(startDate.Year, startDate.Month);
 
             var budget = Repo.GetAll().FirstOrDefault(model => model.YearMonth == startDate.ToString("yyyyMM"));
-            if (budget != null) return (decimal)budget.Amount / daysInMonth * days;
+            if (budget != null) return budget.Amount / daysInMonth * days;
             return 0;
         }
-
 
 
         public IBudgetRepo Repo { get; set; }

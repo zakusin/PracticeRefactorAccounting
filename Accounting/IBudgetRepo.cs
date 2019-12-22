@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Accounting
 {
-    interface IBudgetRepo
+    internal interface IBudgetRepo
     {
-        List<Budget>GetAll();
-
+        List<Budget> GetAll();
     }
 }
