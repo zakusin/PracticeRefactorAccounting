@@ -28,11 +28,11 @@ namespace Accounting
             {
                 if (IsSameYearMonth(startDate, currentDate))
                 {
-                    var budget = Repo.GetAll().FirstOrDefault(model => model.YearMonth == startDate.ToString("yyyyMM"));
+                    var budget = FindBudget(startDate);
                     if (budget != null)
                     {
-                        var days = DateTime.DaysInMonth(startDate.Year, startDate.Month) - startDate.Day + 1;
-                        totalBudget += budget.DailyAmount() * days;
+                        var overlappingDays = DateTime.DaysInMonth(startDate.Year, startDate.Month) - startDate.Day + 1;
+                        totalBudget += budget.DailyAmount() * overlappingDays;
                     }
                 }
                 else if (IsSameYearMonth(endDate, currentDate))
@@ -48,6 +48,11 @@ namespace Accounting
             }
 
             return totalBudget;
+        }
+
+        private Budget FindBudget(DateTime startDate)
+        {
+            return Repo.GetAll().FirstOrDefault(model => model.YearMonth == startDate.ToString("yyyyMM"));
         }
 
         private static bool IsSameYearMonth(DateTime x, DateTime y)
